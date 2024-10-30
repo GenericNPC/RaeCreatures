@@ -1,0 +1,12 @@
+<html>
+<script>
+var creatureList[];
+function AddText(){
+	creatureList = CreatureList + document.getElementById("TextBox").value;
+	document.getElementById("Testing").innerHTML = creatureList;
+}
+</script>
+Enter creature name here: <input type="text" id="TextBox"> </input>
+<input type="button" onClick="AddText()" value="Add"></input>
+<h2 id="Testing"></h2>
+</html>
