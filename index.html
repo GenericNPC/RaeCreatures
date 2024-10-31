@@ -10,17 +10,17 @@ function AddText(){
 	//Puts the full contents of the array below the text input
 	document.getElementById("Testing").innerHTML = format(creatureList);
 }
-function format(creatureList){
+function format(myList){
 	//textReturn to put in the HTML
 	let textReturn = "NULL";
-	for (let i = 0; i < creatureList.length; i++){
+	for (let i = 0; i < myList.length; i++){
 		if (textReturn == "NULL"){
 			//Effectively re-initializes textReturn to be the first element of creatureList presented along with a break-space
-			textReturn = creatureList[i] + "<br>";
+			textReturn = ">&nbsp;&nbsp;&nbsp;" + myList[i] + "<br>";
 		}
 		else{
 			//Adds the next creature in the list to the textReturn and adds a break-space
-			textReturn += creatureList[i] + "<br>";
+			textReturn += ">&nbsp;&nbsp;&nbsp;" + myList[i] + "<br>";
 		}
 	}
 	return textReturn;
@@ -28,15 +28,38 @@ function format(creatureList){
 
 function randomPicker(creatureList){
 	//"pick" is the array that will hold the final values to be used
-	let pick = [-1,-2,-3];
-	for (let i = 0; i < 3; i++){
-		//Select a random creature from the array to add to "pick", and check to see if it repeats
-		do{
-			//Add the random selection from the creatureList array into the pick array
-			pick[i] = creatureList[Math.floor(Math.random() * creatureList.length)];
-		} while(hasUniqueValues(pick) == false);
+	let bounds = document.getElementById("repeatCount").value;
+	//Error checking for if the prompt has data that isn't numbers
+	if (isNaN(bounds)){
+		document.getElementById("StatusResponse").innerHTML = "ERROR: ENTERED TEXT IS NOT A NUMBER!";
 	}
-	document.getElementById("Result").innerHTML = pick;
+	else{
+		//Error checking for if the list of creatures is too short to make a unique list from
+		if (bounds > creatureList.length){
+			document.getElementById("StatusResponse").innerHTML = "ERROR: NOT ENOUGH ENTRIES!";
+		} else{
+			document.getElementById("StatusResponse").innerHTML = "";
+			//"pick" is made to be an array that will be filled progressively, but needs unique values, so it will be initialized with negative numbers in the for loop
+			//let pick = [-1,-2,-3];
+			let pick = new Array;
+			//backCounter is used for counting backwards and giving pick values to initialize with
+			let backCounter = 0;
+			//Loop for initializing pick
+			for (let i = 0; i < bounds; i++){
+				backCounter -= 1;
+				pick[i] = backCounter;
+			}
+			for (let i = 0; i < bounds; i++){
+				//Select a random creature from the array to add to "pick", and check to see if it repeats
+				do{
+					//Add the random selection from the creatureList array into the pick array
+					pick[i] = creatureList[Math.floor(Math.random() * creatureList.length)];
+				} while(hasUniqueValues(pick) == false);
+			}
+			document.getElementById("Result").innerHTML = "Result: <br>" + format(pick);
+		}
+	}
+	
 }
 //Haha, this part isn't my code, but nobody needs to know that.
 //Got this from https://www.geeksforgeeks.org/javascript-program-to-check-if-an-array-contains-only-unique-values/
@@ -47,8 +70,10 @@ function hasUniqueValues(arr) {
 
 </script>
 Enter creature name here: <input type="text" id="TextBox"> </input>
-<input type="button" onClick="AddText()" value="Add"></input>
+<input type="button" onClick="AddText()" value="Add"></input><br>
+Enter the number of random picks you want: <input type="text" id="repeatCount"></input>
 <input type="button" onClick="randomPicker(creatureList)" value="Randomizer"></input>
+<h1 id="StatusResponse"></h1>
 <h2 id="Testing" onload="initialize()"></h2>
-Result:<h1 id="Result"></h1>
+<h1 id="Result"></h1>
 </html>
