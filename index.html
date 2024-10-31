@@ -1,12 +1,54 @@
 <html>
 <script>
-var creatureList[];
-function AddText(){
-	creatureList = CreatureList + document.getElementById("TextBox").value;
-	document.getElementById("Testing").innerHTML = creatureList;
+function initialize(){
+	
 }
+var creatureList = [];
+function AddText(){
+	//Adds the text inside of the textbox to the array
+	creatureList.push(document.getElementById("TextBox").value);
+	//Puts the full contents of the array below the text input
+	document.getElementById("Testing").innerHTML = format(creatureList);
+}
+function format(creatureList){
+	//textReturn to put in the HTML
+	let textReturn = "NULL";
+	for (let i = 0; i < creatureList.length; i++){
+		if (textReturn == "NULL"){
+			//Effectively re-initializes textReturn to be the first element of creatureList presented along with a break-space
+			textReturn = creatureList[i] + "<br>";
+		}
+		else{
+			//Adds the next creature in the list to the textReturn and adds a break-space
+			textReturn += creatureList[i] + "<br>";
+		}
+	}
+	return textReturn;
+}
+
+function randomPicker(creatureList){
+	//"pick" is the array that will hold the final values to be used
+	let pick = [-1,-2,-3];
+	for (let i = 0; i < 3; i++){
+		//Select a random creature from the array to add to "pick", and check to see if it repeats
+		do{
+			//Add the random selection from the creatureList array into the pick array
+			pick[i] = creatureList[Math.floor(Math.random() * creatureList.length)];
+		} while(hasUniqueValues(pick) == false);
+	}
+	document.getElementById("Result").innerHTML = pick;
+}
+//Haha, this part isn't my code, but nobody needs to know that.
+//Got this from https://www.geeksforgeeks.org/javascript-program-to-check-if-an-array-contains-only-unique-values/
+//Checks an array for unique values, returns true if all are unique, otherwise, returns false
+function hasUniqueValues(arr) {
+    return arr.filter((value, index, self) => self.indexOf(value) === index).length === arr.length;
+}
+
 </script>
 Enter creature name here: <input type="text" id="TextBox"> </input>
 <input type="button" onClick="AddText()" value="Add"></input>
-<h2 id="Testing"></h2>
+<input type="button" onClick="randomPicker(creatureList)" value="Randomizer"></input>
+<h2 id="Testing" onload="initialize()"></h2>
+Result:<h1 id="Result"></h1>
 </html>
