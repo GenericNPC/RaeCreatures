@@ -1,8 +1,15 @@
 <html>
+<style>
+body	{background-color: black; color: white;}
+</style>
 <script>
-function initialize(){
-	
-}
+//POTENTIAL EDGE CASES TO FIX:
+// - Entering repeating entries may lead the randomization feature to stall
+// - Consider adding an option to remove entries
+	//Consider using document's innerHTML to add buttons and add function call of removeEntry(entryName/Number)
+
+//Remember to use w3school's javascript "JQuery CSS" section to remember how to apply styles through Javascript
+
 var creatureList = [];
 function AddText(){
 	//Adds the text inside of the textbox to the array
@@ -69,11 +76,13 @@ function hasUniqueValues(arr) {
 }
 
 </script>
+<body>
 Enter creature name here: <input type="text" id="TextBox"> </input>
 <input type="button" onClick="AddText()" value="Add"></input><br>
 Enter the number of random picks you want: <input type="text" id="repeatCount"></input>
 <input type="button" onClick="randomPicker(creatureList)" value="Randomizer"></input>
 <h1 id="StatusResponse"></h1>
-<h2 id="Testing" onload="initialize()"></h2>
+<h2 id="Testing"></h2>
 <h1 id="Result"></h1>
+</body>
 </html>
